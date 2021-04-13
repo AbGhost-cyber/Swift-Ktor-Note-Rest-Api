@@ -1,0 +1,55 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+    id 'application'
+}
+
+
+group 'com.crushtech'
+version '0.0.1'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://kotlin.bintray.com/kotlinx"
+    }
+}
+
+dependencies {
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation "io.ktor:ktor-gson:$ktor_version"
+    implementation "io.ktor:ktor-client-cio:$ktor_version"
+    implementation "io.ktor:ktor-client-gson:$ktor_version"
+    //kmongo lib
+    implementation 'org.litote.kmongo:kmongo:4.0.2'
+    implementation "io.ktor:ktor-client-jackson:$ktor_version"
+    implementation 'org.litote.kmongo:kmongo-coroutine:4.0.2'
+    //for security
+    implementation 'commons-codec:commons-codec:1.14'
+    //auth
+    implementation "io.ktor:ktor-auth:$ktor_version"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
+
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+
+
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+application {
+    mainClassName = 'com.crushtech.swiftnote.ApplicationKt'
+}
+
+
+
+
