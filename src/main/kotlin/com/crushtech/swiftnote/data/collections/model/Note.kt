@@ -9,6 +9,7 @@ data class Note(
     val date:Long,
     val owner:String,
     val color:String,
+    var isPinned:Boolean= false,
     @BsonId
     val id:String = ObjectId().toString()
 

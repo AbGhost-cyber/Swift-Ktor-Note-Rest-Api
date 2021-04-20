@@ -24,10 +24,17 @@ fun Route.notesRouting() {
                     OK,
                     SimpleResponse(false, "Missing or malformed id")
                 )
+
                 if (checkIfUserExistsById(userId)) {
                     val email = call.principal<UserIdPrincipal>()!!.name
-                    val userNote = getUsersNote(email)
-                    call.respond(OK, userNote)
+                    //like this /user/{uid}/note?pin=true...gets all user pinned notes
+                    if (call.request.queryParameters["pin"] == "true") {
+                        val userPinnedNote = getAllPinnedNote(email)
+                        call.respond(OK, userPinnedNote)
+                    } else {
+                        val userNote = getUsersNote(email)
+                        call.respond(OK, userNote)
+                    }
                 } else {
                     call.respond(
                         OK,
@@ -46,7 +53,7 @@ fun Route.notesRouting() {
                         OK,
                         SimpleResponse(false, "Missing or malformed id")
                     )
-                    if (checkIfNoteExists(id)) {
+                    if (checkIfNoteExist(id)) {
                         val note = getNoteById(id)
                         call.respond(OK, note)
                     } else {
@@ -62,6 +69,7 @@ fun Route.notesRouting() {
                     )
                 }
             }
+
             post {
                 //add note
                 val userId = call.parameters["uid"] ?: return@post call.respond(
@@ -87,7 +95,42 @@ fun Route.notesRouting() {
                     )
                 }
             }
-            delete("{id}"){
+
+            post("pin/{id}") {
+                //pin note
+                val userId = call.parameters["uid"] ?: return@post call.respond(
+                    OK,
+                    SimpleResponse(false, "Missing or malformed id")
+                )
+
+                if (checkIfUserExistsById(userId)) {
+                    val noteId = call.parameters["id"] ?: return@post call.respond(
+                        OK,
+                        SimpleResponse(false, "Missing or malformed id")
+                    )
+                    if (checkIfNoteExist(noteId)) {
+                        val note = getNoteById(noteId)
+                        note.isPinned = !note.isPinned
+                        if (saveNote(note)) {
+                            call.respond(OK)
+                        } else {
+                            call.respond(Conflict)
+                        }
+                    } else {
+                        call.respond(
+                            OK,
+                            SimpleResponse(false, "note not found")
+                        )
+                    }
+                } else {
+                    call.respond(
+                        OK,
+                        SimpleResponse(false, "user not found")
+                    )
+                }
+            }
+
+            delete("{id}") {
                 //delete note
                 val userId = call.parameters["uid"] ?: return@delete call.respond(
                     OK,
@@ -98,10 +141,10 @@ fun Route.notesRouting() {
                         OK,
                         SimpleResponse(false, "Missing or malformed id")
                     )
-                    if (checkIfNoteExists(noteId)) {
-                       if(deleteNote(noteId)){
-                           call.respond(OK, SimpleResponse(true, "note deleted"))
-                       }
+                    if (checkIfNoteExist(noteId)) {
+                        if (deleteNote(noteId)) {
+                            call.respond(OK, SimpleResponse(true, "note deleted"))
+                        }
                     } else {
                         call.respond(
                             OK,
@@ -120,7 +163,8 @@ fun Route.notesRouting() {
     }
 }
 
-fun Application.registerNotesRoutes(){
+
+fun Application.registerNotesRoutes() {
     routing {
         notesRouting()
     }

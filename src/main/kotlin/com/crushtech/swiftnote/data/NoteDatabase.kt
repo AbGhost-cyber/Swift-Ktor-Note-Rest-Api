@@ -47,15 +47,22 @@ suspend fun getUsernameFromEmail(email: String): String {
     return users.findOne(User::email eq email)!!.username
 }
 
+//get user's id via email
+suspend fun getIdFromEmail(email: String): String {
+    return users.findOne(User::email eq email)!!.uid
+}
+
+
+
+suspend fun checkIfNoteExist(id: String): Boolean {
+    return notes.findOne(Note::id eq id) != null
+}
+
 //save note to our mongo server
 suspend fun saveNote(note: Note): Boolean {
-    //check if note exists
-    val noteExists = notes.findOneById(note.id) != null
-    return if (noteExists) {
-        //update note
+    return if (checkIfNoteExist(note.id)) {
         notes.updateOneById(note.id, note).wasAcknowledged()
     } else {
-        //insert if note doesn't exist
         notes.insertOne(note).wasAcknowledged()
     }
 }
@@ -64,6 +71,12 @@ suspend fun saveNote(note: Note): Boolean {
 suspend fun deleteNote(noteId: String): Boolean {
     return notes.deleteOneById(noteId).wasAcknowledged()
 }
+
+//get all pinned note
+suspend fun getAllPinnedNote(email: String): List<Note> {
+    return getUsersNote(email).filter { it.isPinned };
+}
+
 
 //get list of user's note
 suspend fun getUsersNote(email: String): List<Note> {
@@ -74,6 +87,7 @@ suspend fun getUsersNote(email: String): List<Note> {
 suspend fun getNoteById(noteId: String): Note {
     return notes.findOneById(noteId)!!
 }
-suspend fun checkIfNoteExists(id: String): Boolean {
-    return notes.findOne(Note::id eq id) != null
-}
+
+//suspend fun checkIfNoteExists(id: String): Boolean {
+//    return notes.findOne(Note::id eq id) != null
+//}

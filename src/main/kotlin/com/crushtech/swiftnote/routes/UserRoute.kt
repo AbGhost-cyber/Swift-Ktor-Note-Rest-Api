@@ -12,6 +12,7 @@ import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.delay
 
 /*
 custom route to group everything that falls under user endpoint
@@ -49,7 +50,8 @@ fun Route.userRouting() {
                 val passwordIsCorrect = checkPasswordForUser(request.email, request.password)
                 if (passwordIsCorrect) {
                     val username = getUsernameFromEmail(request.email)
-                    call.respond(OK, SimpleResponse(true, username))
+                    val id = getIdFromEmail(request.email)
+                    call.respond(OK, SimpleResponse(true, username, id))
                 } else {
                     call.respond(OK, SimpleResponse(false, "the email or password is incorrect"))
                 }
@@ -80,10 +82,13 @@ fun Route.userRouting() {
                     )
                 )
             ) {
+                val id = getIdFromEmail(request.email)
+                delay(1000)
                 call.respond(
                     OK, SimpleResponse(
                         true,
-                        "Account Created Successfully"
+                        "Account Created Successfully",
+                        id
                     )
                 )
             }
