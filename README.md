@@ -27,7 +27,7 @@ Backend for Swift Note App
 | /user/{uid}/note?pin=true   | GET    | this endpoint returns all pinned notes for the specified {uid} |
 | /user/{uid}/note/{id} |GET     | this endpoint returns a note if the speciifed note {id} is valid|
 | /user/{uid}/note | POST   |  this endpoint adds a note to mongo db|
-| /user/{uid}/note/pin/{id} | POST     |    method:post this endpoint adds a note to a user's list of pinned notes or removes if already pinned(currently restricted to 4 pinned notes per user). |
+| /user/{uid}/note/pin/{id} | POST     | this endpoint adds a note to a user's list of pinned notes or removes if already pinned(currently restricted to 4 pinned notes per user). |
 | /user/{uid}/note/{id} | DELETE      |    this endpoint deletes a note from mongo db |
 
 
