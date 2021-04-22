@@ -1,14 +1,14 @@
 # Swift-Ktor-Note-Rest-Api
 Backend for Swift Note App
 
-#SIMPLE NOTE REST API MADE WITH KTOR AND MONGO DB KTOR LIBRARY KMONGO
-<br>this repository demonstrates how to build an http rest api with ktor, currently there are two routes namely: note route and user route, below are the respective api end points.
-
 #HOW TO USE:
 - install intellij, clone this repo and build project.
 - currently this server runs on localhost.
 - you can also use postman to test each endpoint before integrating on client side.
 </br>
+
+#SIMPLE NOTE REST API MADE WITH KTOR AND MONGO DB KTOR LIBRARY KMONGO
+<br>this repository demonstrates how to build an http rest api with ktor, currently there are two routes namely: note route and user route, below are the respective api end points.
 
 #USER ROUTE:
 <br>Available end points:
