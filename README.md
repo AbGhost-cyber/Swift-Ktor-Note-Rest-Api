@@ -1,6 +1,7 @@
 # Swift-Ktor-Note-Rest-Api
-#SIMPLE NOTE REST API MADE WITH KTOR AND MONGO DB KTOR LIBRARY KMONGO
-Backend for Swift Note App
+#SIMPLE NOTE REST API MADE WITH KTOR AND
+<br>MONGO DB KTOR LIBRARY KMONGO
+<br>Backend for Swift Note App
 
 #HOW TO USE:
 - install intellij, clone this repo and build project.
